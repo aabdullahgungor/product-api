@@ -3,11 +3,11 @@ package models
 import (
 	"fmt"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type Brand struct {
-	Id   primitive.ObjectId `bson:"_id"`
+	Id   bson.ObjectId `bson:"_id"`
 	Name string        `bson:"name"`
 }
 

@@ -5,17 +5,17 @@ import (
 	"strings"
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type Product struct {
-	Id         primitive.ObjectId `bson:"_id"`
+	Id         bson.ObjectId `bson:"_id"`
 	Name       string        `bson:"name"`
 	Price      float64       `bson:"price"`
 	Quantity   int64         `bson:"quantity"`
 	Status     bool          `bson:"status"`
 	Date       time.Time     `bson:"date"`
-	CategoryId primitive.ObjectId `bson:"categoryId"`
+	CategoryId bson.ObjectId `bson:"categoryId"`
 	Brand      Brand         `bson:"brand"`
 	Colors     []string      `bson:"colors"`
 }
