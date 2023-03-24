@@ -2,19 +2,20 @@ package models
 
 import (
 	"fmt"
-	"go.mongodb.org/mongo-driver/bson"
 	"strings"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Product struct {
-	Id         bson.ObjectId `bson:"_id"`
+	Id         primitive.ObjectId `bson:"_id"`
 	Name       string        `bson:"name"`
 	Price      float64       `bson:"price"`
 	Quantity   int64         `bson:"quantity"`
 	Status     bool          `bson:"status"`
 	Date       time.Time     `bson:"date"`
-	CategoryId bson.ObjectId `bson:"categoryId"`
+	CategoryId primitive.ObjectId `bson:"categoryId"`
 	Brand      Brand         `bson:"brand"`
 	Colors     []string      `bson:"colors"`
 }
