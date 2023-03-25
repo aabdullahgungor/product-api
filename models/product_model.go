@@ -5,23 +5,23 @@ import (
 	"strings"
 	"time"
 
-	"gopkg.in/mgo.v2/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Product struct {
-	Id         bson.ObjectId `bson:"_id"`
-	Name       string        `bson:"name"`
-	Price      float64       `bson:"price"`
-	Quantity   int64         `bson:"quantity"`
-	Status     bool          `bson:"status"`
-	Date       time.Time     `bson:"date"`
-	CategoryId bson.ObjectId `bson:"categoryId"`
-	Brand      Brand         `bson:"brand"`
-	Colors     []string      `bson:"colors"`
+	Id         primitive.ObjectID `bson:"_id,omitempty"`
+	Name       string        `bson:"name,omitempty"`
+	Price      float64       `bson:"price,omitempty"`
+	Quantity   int64         `bson:"quantity,omitempty"`
+	Status     bool          `bson:"status,omitempty"`
+	Date       time.Time     `bson:"date,omitempty"`
+	CategoryId primitive.ObjectID `bson:"categoryId,omitempty"`
+	Brand      Brand         `bson:"brand,omitempty"`
+	Colors     []string      `bson:"colors,omitempty"`
 }
 
 func (product Product) ToString() string {
-	result := fmt.Sprintf("id: %s", product.Id)
+	result := fmt.Sprintf("id: %s", product.Id.Hex())
 	result = result + fmt.Sprintf("\nname: %s", product.Name)
 	result = result + fmt.Sprintf("\nprice: %0.1f", product.Price)
 	result = result + fmt.Sprintf("\nquantity: %d", product.Quantity)
