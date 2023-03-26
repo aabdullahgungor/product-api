@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+	"log"
 	"strconv"
 
 	"github.com/aabdullahgungor/product-api/database"
@@ -58,7 +59,7 @@ func (m *MongoDbProductRepository) GetById(id string) (models.Product, error) {
 
 }
 
-func (m *MongoDbProductRepository) Create(product *models.Product) (string, error) {
+func (m *MongoDbProductRepository) Create(product *models.Product) error {
 
 	db, err := database.GetMongoDB()
 	if err != nil {
@@ -73,12 +74,12 @@ func (m *MongoDbProductRepository) Create(product *models.Product) (string, erro
         panic(err)
 	}
 
-	message := fmt.Sprintf("\ndisplay the ids of the newly inserted objects: %v", result.InsertedID)
-	
-	return message, err
+	log.Printf("\ndisplay the ids of the newly inserted objects: %v", result.InsertedID)
+
+	return  err
 }
 
-func (m *MongoDbProductRepository) Edit(product *models.Product) (string, error) { 
+func (m *MongoDbProductRepository) Edit(product *models.Product) error { 
 
 	db, err := database.GetMongoDB()
 	if err != nil {
@@ -104,13 +105,13 @@ func (m *MongoDbProductRepository) Edit(product *models.Product) (string, error)
         panic(err)
 	}
 
-	message := "Number of documents updated:"+ strconv.Itoa(int(result.ModifiedCount))
+	log.Println("Number of documents updated:"+ strconv.Itoa(int(result.ModifiedCount))) 
 
-	return message, err
+	return  err
 
 }
 
-func (m *MongoDbProductRepository) Delete(id string) (string, error) { 
+func (m *MongoDbProductRepository) Delete(id string) error { 
 	
 	db, err := database.GetMongoDB()
 	if err != nil {
@@ -130,8 +131,8 @@ func (m *MongoDbProductRepository) Delete(id string) (string, error) {
 
 	// display the number of documents deleted
 
-	message := "deleting the first result from the search filter\n"+ "Number of documents deleted:"+strconv.Itoa(int(result.DeletedCount))
+	log.Println("deleting the first result from the search filter\n"+ "Number of documents deleted:"+strconv.Itoa(int(result.DeletedCount)))
 
-	return message, err
+	return err
 
 }
