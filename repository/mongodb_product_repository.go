@@ -6,11 +6,13 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"time"
 
-	"github.com/aabdullahgungor/product-api/database"
 	"github.com/aabdullahgungor/product-api/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var (
@@ -18,17 +20,30 @@ var (
 )
 
 type MongoDbProductRepository struct {
-
+	connectionPool *mongo.Database
 }
+
+func NewMongoDbProductRepository() *MongoDbProductRepository {
+	databaseURL := "mongodb+srv://abdullahgungor:Ag7410@cluster0.xbwcqpz.mongodb.net/?retryWrites=true&w=majority"
+    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    defer cancel()   
+    // mongo.Connect return mongo.Client method
+    client, err := mongo.Connect(ctx, options.Client().ApplyURI(databaseURL))
+    if err != nil {
+        panic(err)
+    }
+    
+    db := client.Database("productdb")
+     
+    return &MongoDbProductRepository{
+		connectionPool: db,
+	}
+}
+
 
 func (m *MongoDbProductRepository) GetAllProducts() ([]models.Product, error) {
 
-	db, err := database.GetMongoDB()
-	if err != nil {
-        panic(err)
-    } 
-
-	productCollection := db.Collection("product")
+	productCollection := m.connectionPool.Collection("product")
 	
 	var products []models.Product
 	productCursor, err := productCollection.Find(context.TODO(), bson.M{})
@@ -45,17 +60,12 @@ func (m *MongoDbProductRepository) GetAllProducts() ([]models.Product, error) {
 
 func (m *MongoDbProductRepository) GetProductById(id string) (models.Product, error) { 
 
-	db, err := database.GetMongoDB()
-	if err != nil {
-        panic(err)
-    } 
-
-	productCollection := db.Collection("product")
+	productCollection := m.connectionPool.Collection("product")
 
 	objId, _ := primitive.ObjectIDFromHex(id)
 	
 	var product models.Product
-	err = productCollection.FindOne(context.TODO(), bson.M{"_id": objId}).Decode(&product)
+	err := productCollection.FindOne(context.TODO(), bson.M{"_id": objId}).Decode(&product)
 	if err != nil {
 		return models.Product{}, ErrProductNotFound
 	}
@@ -66,12 +76,8 @@ func (m *MongoDbProductRepository) GetProductById(id string) (models.Product, er
 
 func (m *MongoDbProductRepository) CreateProduct(product *models.Product) error {
 
-	db, err := database.GetMongoDB()
-	if err != nil {
-        panic(err)
-    } 
 
-	productCollection := db.Collection("product")
+	productCollection := m.connectionPool.Collection("product")
 
 	result, err := productCollection.InsertOne(context.TODO(), product)
 
@@ -86,12 +92,8 @@ func (m *MongoDbProductRepository) CreateProduct(product *models.Product) error 
 
 func (m *MongoDbProductRepository) EditProduct(product *models.Product) error { 
 
-	db, err := database.GetMongoDB()
-	if err != nil {
-        panic(err)
-    } 
 
-	productCollection := db.Collection("product")
+	productCollection := m.connectionPool.Collection("product")
 
 	bsonBytes, err:= bson.Marshal(&product)
 	
@@ -118,12 +120,8 @@ func (m *MongoDbProductRepository) EditProduct(product *models.Product) error {
 
 func (m *MongoDbProductRepository) DeleteProduct(id string) error { 
 	
-	db, err := database.GetMongoDB()
-	if err != nil {
-        panic(err)
-    } 
 
-	productCollection := db.Collection("product")
+	productCollection := m.connectionPool.Collection("product")
 
 	objId, _ := primitive.ObjectIDFromHex(id)
 	

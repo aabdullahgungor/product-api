@@ -31,15 +31,15 @@ func (ps *productController) GetProductById(c *gin.Context) {
 	str_id := c.Param("id")
 	product, err := ps.service.GetById(str_id)
 	if err != nil {
-		if errors.Is(err, service.ErrIDIsNotValid) {
-			c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "id is not valid"+err.Error()})
-			return
-		} else if  errors.Is(err, service.ErrProductNotFound) {
-			c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Product cannot be found"+err.Error()})
-			return
-		}
-		c.IndentedJSON(http.StatusInternalServerError, gin.H{"error":err.Error()})
-		return
+	 	if errors.Is(err, service.ErrIDIsNotValid) {
+	 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "id is not valid"+err.Error()})
+	 		return
+	 	} else if  errors.Is(err, service.ErrProductNotFound) {
+	 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Product cannot be found"+err.Error()})
+	 		return
+	 	}
+	 	c.IndentedJSON(http.StatusInternalServerError, gin.H{"error":err.Error()})
+	 	return
 	} 
 	c.Header("Content-Type", "application/json")
 	c.IndentedJSON(http.StatusOK, product)

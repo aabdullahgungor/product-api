@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"strconv"
 
 	"github.com/aabdullahgungor/product-api/models"
 	"github.com/aabdullahgungor/product-api/repository"
@@ -32,11 +31,7 @@ func (d *DefaultProductService) GetAll() ([]models.Product, error) {
 }
 
 func (d *DefaultProductService) GetById(id string) (models.Product, error) {
-	int_id, _ := strconv.Atoi(id)
-	if int_id <= 0 {
-		return models.Product{}, ErrIDIsNotValid
-	}
-
+	
 	product, err := d.productRepo.GetProductById(id)
 
 	if err != nil {
@@ -76,11 +71,7 @@ func (d *DefaultProductService) Edit(product *models.Product) error {
 }
 
 func (d *DefaultProductService) Delete(id string) error {
-	int_id, _ := strconv.Atoi(id)
-	if int_id <= 0 {
-		return  ErrIDIsNotValid
-	}
-
+	
 	err := d.productRepo.DeleteProduct(id)
 
 	if err != nil {
