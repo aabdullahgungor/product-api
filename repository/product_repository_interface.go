@@ -5,9 +5,9 @@ import (
 )
 
 type IProductRepository interface {
-	GetAll() ([]models.Product, error)
-	GetById(id string) (models.Product, error)
-	Create(product *models.Product) error
-	Edit(product *models.Product) error
-	Delete(id string) error
+	GetAllProducts() ([]models.Product, error)
+	GetProductById(id string) (models.Product, error)
+	CreateProduct(product *models.Product) error
+	EditProduct(product *models.Product) error
+	DeleteProduct(id string) error
 }

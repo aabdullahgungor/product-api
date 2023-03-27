@@ -16,7 +16,7 @@ type MongoDbProductRepository struct {
 
 }
 
-func (m *MongoDbProductRepository) GetAll() ([]models.Product, error) {
+func (m *MongoDbProductRepository) GetAllProducts() ([]models.Product, error) {
 
 	db, err := database.GetMongoDB()
 	if err != nil {
@@ -38,7 +38,7 @@ func (m *MongoDbProductRepository) GetAll() ([]models.Product, error) {
 
 }
 
-func (m *MongoDbProductRepository) GetById(id string) (models.Product, error) { 
+func (m *MongoDbProductRepository) GetProductById(id string) (models.Product, error) { 
 
 	db, err := database.GetMongoDB()
 	if err != nil {
@@ -59,7 +59,7 @@ func (m *MongoDbProductRepository) GetById(id string) (models.Product, error) {
 
 }
 
-func (m *MongoDbProductRepository) Create(product *models.Product) error {
+func (m *MongoDbProductRepository) CreateProduct(product *models.Product) error {
 
 	db, err := database.GetMongoDB()
 	if err != nil {
@@ -79,7 +79,7 @@ func (m *MongoDbProductRepository) Create(product *models.Product) error {
 	return  err
 }
 
-func (m *MongoDbProductRepository) Edit(product *models.Product) error { 
+func (m *MongoDbProductRepository) EditProduct(product *models.Product) error { 
 
 	db, err := database.GetMongoDB()
 	if err != nil {
@@ -111,7 +111,7 @@ func (m *MongoDbProductRepository) Edit(product *models.Product) error {
 
 }
 
-func (m *MongoDbProductRepository) Delete(id string) error { 
+func (m *MongoDbProductRepository) DeleteProduct(id string) error { 
 	
 	db, err := database.GetMongoDB()
 	if err != nil {
