@@ -11,6 +11,7 @@ import (
 var (
 	ErrIDIsNotValid    = errors.New("id is not valid")
 	ErrNameIsNotEmpty = errors.New("Product title cannot be empty")
+	ErrProductNotFound = errors.New("Product cannot be found")
 )
 
 type DefaultProductService struct {
