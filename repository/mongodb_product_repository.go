@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"strconv"
@@ -10,6 +11,10 @@ import (
 	"github.com/aabdullahgungor/product-api/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+var (
+	ErrProductNotFound = errors.New("FromRepository - product not found")
 )
 
 type MongoDbProductRepository struct {
@@ -52,10 +57,10 @@ func (m *MongoDbProductRepository) GetProductById(id string) (models.Product, er
 	var product models.Product
 	err = productCollection.FindOne(context.TODO(), bson.M{"_id": objId}).Decode(&product)
 	if err != nil {
-		panic(err)
+		return models.Product{}, ErrProductNotFound
 	}
 	
-	return product, err
+	return product, nil
 
 }
 
