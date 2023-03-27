@@ -66,7 +66,7 @@ func (ps *productController) CreateProduct(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusCreated, gin.H{"message":"Product has been created","product_id": product.Id})
+	c.IndentedJSON(http.StatusCreated, gin.H{"message":"Product has been created"})
 
 }		
 
