@@ -9,15 +9,15 @@ import (
 )
 
 type Product struct {
-	Id         primitive.ObjectID `bson:"_id,omitempty"`
-	Name       string        `bson:"name,omitempty"`
-	Price      float64       `bson:"price,omitempty"`
-	Quantity   int64         `bson:"quantity,omitempty"`
-	Status     bool          `bson:"status,omitempty"`
-	Date       time.Time     `bson:"date,omitempty"`
-	CategoryId primitive.ObjectID `bson:"categoryId,omitempty"`
-	Brand      Brand         `bson:"brand,omitempty"`
-	Colors     []string      `bson:"colors,omitempty"`
+	Id         primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Name       string        `bson:"name,omitempty" json:"name"`
+	Price      float64       `bson:"price,omitempty" json:"price"`
+	Quantity   int64         `bson:"quantity,omitempty" json:"quantity"`
+	Status     bool          `bson:"status,omitempty" json:"status"`
+	Date       time.Time     `bson:"date,omitempty" json:"date"`
+	CategoryId primitive.ObjectID `bson:"categoryId,omitempty" json:"category_id"`
+	Brand      Brand         `bson:"brand,omitempty" json:"brand"`
+	Colors     []string      `bson:"colors,omitempty" json:"colors"`
 }
 
 func (product Product) ToString() string {

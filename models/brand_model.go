@@ -7,8 +7,8 @@ import (
 )
 
 type Brand struct {
-	Id   primitive.ObjectID `bson:"_id,omitempty"`
-	Name string        `bson:"name,omitempty"`
+	Id   primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Name string        `bson:"name,omitempty" json:"name"`
 }
 
 func (brand Brand) ToString() string {
