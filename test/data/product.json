@@ -1,0 +1,170 @@
+[{
+  "_id": {
+    "$oid": "641db6ba47413b86ecfae49b"
+  },
+  "name": "Mobile 1",
+  "price": 45,
+  "quantity": 4,
+  "status": true,
+  "date": {
+    "$date": "2016-10-20T00:00:00.000Z"
+  },
+  "categoryId": {
+    "$oid": "5a30de130867edfa45711668"
+  },
+  "brand": {
+    "_id": {
+      "$oid": "641db6ba47413b86ecfae49a"
+    },
+    "name": "brand 1"
+  },
+  "colors": [
+    "red",
+    "green",
+    "blue"
+  ]
+},{
+  "_id": {
+    "$oid": "641db75647413b86ecfae4a2"
+  },
+  "name": "Mobile 2",
+  "price": 12,
+  "quantity": 7,
+  "status": true,
+  "date": {
+    "$date": "2017-11-14T00:00:00.000Z"
+  },
+  "categoryId": {
+    "$oid": "5a30de130867edfa45711668"
+  },
+  "brand": {
+    "_id": {
+      "$oid": "641db75647413b86ecfae49c"
+    },
+    "name": "brand 2"
+  },
+  "colors": [
+    "yellow",
+    "green"
+  ]
+},{
+  "_id": {
+    "$oid": "641db75647413b86ecfae4a3"
+  },
+  "name": "Mobile 3",
+  "price": 28,
+  "quantity": 8,
+  "status": true,
+  "date": {
+    "$date": "2017-11-20T00:00:00.000Z"
+  },
+  "categoryId": {
+    "$oid": "5a30de130867edfa45711668"
+  },
+  "brand": {
+    "_id": {
+      "$oid": "641db75647413b86ecfae49d"
+    },
+    "name": "brand 3"
+  },
+  "colors": [
+    "black",
+    "blue"
+  ]
+},{
+  "_id": {
+    "$oid": "641db75647413b86ecfae4a4"
+  },
+  "name": "Laptop 1",
+  "price": 39,
+  "quantity": 12,
+  "status": false,
+  "date": {
+    "$date": "2017-12-26T00:00:00.000Z"
+  },
+  "categoryId": {
+    "$oid": "5a30de130867edfa45711669"
+  },
+  "brand": {
+    "_id": {
+      "$oid": "641db75647413b86ecfae49e"
+    },
+    "name": "brand 1"
+  },
+  "colors": [
+    "blue"
+  ]
+},{
+  "_id": {
+    "$oid": "641db75647413b86ecfae4a5"
+  },
+  "name": "Laptop 2",
+  "price": 86,
+  "quantity": 23,
+  "status": true,
+  "date": {
+    "$date": "2017-03-11T00:00:00.000Z"
+  },
+  "categoryId": {
+    "$oid": "5a30de130867edfa45711669"
+  },
+  "brand": {
+    "_id": {
+      "$oid": "641db75647413b86ecfae49f"
+    },
+    "name": "brand 1"
+  },
+  "colors": [
+    "blue",
+    "yellow"
+  ]
+},{
+  "_id": {
+    "$oid": "641db75647413b86ecfae4a6"
+  },
+  "name": "Tivi 1",
+  "price": 22,
+  "quantity": 7,
+  "status": true,
+  "date": {
+    "$date": "2017-06-26T00:00:00.000Z"
+  },
+  "categoryId": {
+    "$oid": "5a30de130867edfa4571166a"
+  },
+  "brand": {
+    "_id": {
+      "$oid": "641db75647413b86ecfae4a0"
+    },
+    "name": "brand 1"
+  },
+  "colors": [
+    "blue",
+    "white",
+    "black"
+  ]
+},{
+  "_id": {
+    "$oid": "641db75647413b86ecfae4a7"
+  },
+  "name": "Tivi 2",
+  "price": 86,
+  "quantity": 23,
+  "status": false,
+  "date": {
+    "$date": "2017-09-24T00:00:00.000Z"
+  },
+  "categoryId": {
+    "$oid": "5a30de130867edfa4571166a"
+  },
+  "brand": {
+    "_id": {
+      "$oid": "641db75647413b86ecfae4a1"
+    },
+    "name": "brand 3"
+  },
+  "colors": [
+    "red",
+    "green"
+  ]
+}]
