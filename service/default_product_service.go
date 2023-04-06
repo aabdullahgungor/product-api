@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/aabdullahgungor/product-api/models"
 	"github.com/aabdullahgungor/product-api/repository"
@@ -23,15 +24,17 @@ func NewDefaultProductService(pRepo repository.IProductRepository) *DefaultProdu
 	}
 }
 
-
 func (d *DefaultProductService) GetAll() ([]models.Product, error) {
-
-	return d.productRepo.GetAllProducts()
-	
+	return d.productRepo.GetAllProducts()	
 }
 
 func (d *DefaultProductService) GetById(id string) (models.Product, error) {
 	
+	_ , err := strconv.Atoi(id)
+	if err != nil {
+		return models.Product{}, ErrIDIsNotValid
+	}
+
 	product, err := d.productRepo.GetProductById(id)
 
 	if err != nil {
@@ -39,7 +42,6 @@ func (d *DefaultProductService) GetById(id string) (models.Product, error) {
 	}
 
 	return product, nil
-
 }
 
 func (d *DefaultProductService) Create(product *models.Product) error {
@@ -49,7 +51,6 @@ func (d *DefaultProductService) Create(product *models.Product) error {
 	}
 
 	return d.productRepo.CreateProduct(product)
-
 }
 
 func (d *DefaultProductService) Edit(product *models.Product) error {
@@ -71,13 +72,17 @@ func (d *DefaultProductService) Edit(product *models.Product) error {
 }
 
 func (d *DefaultProductService) Delete(id string) error {
+
+	_ , err := strconv.Atoi(id)
+	if err != nil {
+		return  ErrIDIsNotValid
+	}
 	
-	err := d.productRepo.DeleteProduct(id)
+	err = d.productRepo.DeleteProduct(id)
 
 	if err != nil {
 		return repository.ErrProductNotFound
 	}
 
 	return nil
-
 }
