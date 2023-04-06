@@ -32,19 +32,18 @@ func (ps *productController) GetProductById(c *gin.Context) {
 	product, err := ps.service.GetById(str_id)
 	if err != nil {
 	 	if errors.Is(err, service.ErrIDIsNotValid) {
-	 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "id is not valid"+err.Error()})
+	 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	 		return
 	 	} else if  errors.Is(err, service.ErrProductNotFound) {
-	 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Product cannot be found"+err.Error()})
+	 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": err.Error()})
 	 		return
 	 	}
-	 	c.IndentedJSON(http.StatusInternalServerError, gin.H{"error":err.Error()})
+	 	c.IndentedJSON(http.StatusBadRequest, gin.H{"error":err.Error()})
 	 	return
 	} 
 	c.Header("Content-Type", "application/json")
 	c.IndentedJSON(http.StatusOK, product)
 }
-
 
 func (ps *productController) CreateProduct(c *gin.Context) { 
 	var product models.Product
@@ -67,7 +66,6 @@ func (ps *productController) CreateProduct(c *gin.Context) {
 	}
 
 	c.IndentedJSON(http.StatusCreated, gin.H{"message":"Product has been created"})
-
 }		
 
 func (ps *productController) EditProduct(c *gin.Context) { 
@@ -91,7 +89,6 @@ func (ps *productController) EditProduct(c *gin.Context) {
 	}
 
 	c.IndentedJSON(http.StatusCreated, gin.H{"message":"Product has been edited","product_id": product.Id})
-
 }		
 
 func (ps *productController) DeleteProduct(c *gin.Context) { 
@@ -99,16 +96,15 @@ func (ps *productController) DeleteProduct(c *gin.Context) {
 	err := ps.service.Delete(str_id)
 	if err != nil {
 		if errors.Is(err, service.ErrIDIsNotValid) {
-			c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "id is not valid"+err.Error()})
+			c.IndentedJSON(http.StatusNotFound, gin.H{"error": "id is not valid"+err.Error()})
 			return
 		} else if  errors.Is(err, service.ErrProductNotFound) {
 			c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Product cannot be found"+err.Error()})
 			return
 		}
-		c.IndentedJSON(http.StatusInternalServerError, gin.H{"error":err.Error()})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error":err.Error()})
 		return
 	}
 
 	c.IndentedJSON(http.StatusAccepted, gin.H{"message":"Product has been deleted","product_id": str_id})	
-
 }		
