@@ -24,7 +24,7 @@ type MongoDbProductRepository struct {
 }
 
 func NewMongoDbProductRepository() *MongoDbProductRepository {
-	databaseURL := "mongodb+srv://abdullahgungor:Ag7410@cluster0.xbwcqpz.mongodb.net/?retryWrites=true&w=majority"
+	databaseURL := "mongodb+srv://<username>:<password>@cluster0.xbwcqpz.mongodb.net/?retryWrites=true&w=majority"
     ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
     defer cancel()   
     // mongo.Connect return mongo.Client method
