@@ -24,7 +24,7 @@ type MongoDbProductRepository struct {
 }
 
 func NewMongoDbProductRepository() *MongoDbProductRepository {
-	databaseURL := "mongodb+srv://<username>:<password>@cluster0.xbwcqpz.mongodb.net/?retryWrites=true&w=majority"
+	databaseURL := "mongodb+srv://abdullahgungor:Ag7410@cluster0.xbwcqpz.mongodb.net/?retryWrites=true&w=majority"
     ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
     defer cancel()   
     // mongo.Connect return mongo.Client method
@@ -40,7 +40,6 @@ func NewMongoDbProductRepository() *MongoDbProductRepository {
 	}
 }
 
-
 func (m *MongoDbProductRepository) GetAllProducts() ([]models.Product, error) {
 
 	productCollection := m.connectionPool.Collection("product")
@@ -55,7 +54,6 @@ func (m *MongoDbProductRepository) GetAllProducts() ([]models.Product, error) {
 	}
 	
 	return products, err
-
 }
 
 func (m *MongoDbProductRepository) GetProductById(id string) (models.Product, error) { 
@@ -76,7 +74,6 @@ func (m *MongoDbProductRepository) GetProductById(id string) (models.Product, er
 
 func (m *MongoDbProductRepository) CreateProduct(product *models.Product) error {
 
-
 	productCollection := m.connectionPool.Collection("product")
 
 	result, err := productCollection.InsertOne(context.TODO(), product)
@@ -91,7 +88,6 @@ func (m *MongoDbProductRepository) CreateProduct(product *models.Product) error 
 }
 
 func (m *MongoDbProductRepository) EditProduct(product *models.Product) error { 
-
 
 	productCollection := m.connectionPool.Collection("product")
 
@@ -115,11 +111,9 @@ func (m *MongoDbProductRepository) EditProduct(product *models.Product) error {
 	log.Println("Number of documents updated:"+ strconv.Itoa(int(result.ModifiedCount))) 
 
 	return  err
-
 }
 
 func (m *MongoDbProductRepository) DeleteProduct(id string) error { 
-	
 
 	productCollection := m.connectionPool.Collection("product")
 
@@ -133,9 +127,7 @@ func (m *MongoDbProductRepository) DeleteProduct(id string) error {
 	}
 
 	// display the number of documents deleted
-
 	log.Println("deleting the first result from the search filter\n"+ "Number of documents deleted:"+strconv.Itoa(int(result.DeletedCount)))
 
 	return err
-
 }
