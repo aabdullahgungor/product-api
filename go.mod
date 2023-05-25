@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/gin-gonic/gin v1.9.0
+	github.com/go-playground/assert/v2 v2.2.0
 	github.com/golang/mock v1.6.0
 	github.com/stretchr/testify v1.8.1
 	go.mongodb.org/mongo-driver v1.11.3
