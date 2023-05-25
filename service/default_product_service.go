@@ -9,8 +9,8 @@ import (
 
 var (
 	ErrIDIsNotValid    = errors.New("id is not valid")
-	ErrNameIsNotEmpty = errors.New("Product title cannot be empty")
-	ErrProductNotFound = errors.New("Product cannot be found")
+	ErrNameIsNotEmpty  = errors.New("product title cannot be empty")
+	ErrProductNotFound = errors.New("product not found")
 )
 
 type DefaultProductService struct {
@@ -24,11 +24,11 @@ func NewDefaultProductService(pRepo repository.IProductRepository) *DefaultProdu
 }
 
 func (d *DefaultProductService) GetAll() ([]models.Product, error) {
-	return d.productRepo.GetAllProducts()	
+	return d.productRepo.GetAllProducts()
 }
 
 func (d *DefaultProductService) GetById(id string) (models.Product, error) {
-	
+
 	product, err := d.productRepo.GetProductById(id)
 
 	if err != nil {
@@ -48,9 +48,9 @@ func (d *DefaultProductService) Create(product *models.Product) error {
 }
 
 func (d *DefaultProductService) Edit(product *models.Product) error {
-	
+
 	if product.Id.String() == "" {
-		return  ErrIDIsNotValid
+		return ErrIDIsNotValid
 	}
 	if product.Name == "" {
 		return ErrNameIsNotEmpty
@@ -59,7 +59,7 @@ func (d *DefaultProductService) Edit(product *models.Product) error {
 	err := d.productRepo.EditProduct(product)
 
 	if err != nil {
-		return  repository.ErrProductNotFound
+		return repository.ErrProductNotFound
 	}
 
 	return nil
