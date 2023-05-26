@@ -195,7 +195,113 @@ func TestCarController_CreateProduct(t *testing.T) {
 }
 
 func TestCarController_EditProduct(t *testing.T) {
+	t.Run("ErrorEdit", func(t *testing.T) {
+		product := models.Product{
+			Id:         primitive.ObjectID{'1'},
+			Name:       "Mobile 1",
+			Price:      40,
+			Quantity:   4,
+			Status:     true,
+			Date:       time.Time{},
+			CategoryId: primitive.ObjectID{'1'},
+			Brand: models.Brand{
+				Id:   primitive.ObjectID{'1'},
+				Name: "Brand 1",
+			},
+			Colors: []string{"red", "green", "blue"},
+		}
+		jsonValue, _ := json.Marshal(product)
+		byteProduct := bytes.NewBuffer(jsonValue)
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+		mockService := service.NewMockIProductService(mockCtrl)
+		mockService.EXPECT().Edit(&product).Return(errors.New("hata")).AnyTimes()
+
+		w := httptest.NewRecorder()
+		gin.SetMode(gin.ReleaseMode)
+		ctx, r := gin.CreateTestContext(w)
+		productTestController := NewProductController(mockService)
+		productTestController.EditProduct(ctx)
+		req, err := http.NewRequest("PUT", "api/v1/products", byteProduct)
+		if err != nil {
+			fmt.Println(err)
+		}
+		r.ServeHTTP(w, req)
+		assert.Equal(t, http.StatusNotAcceptable, w.Code)
+		t.Log(w.Body.String())
+	})
+
+	t.Run("Success", func(t *testing.T) {
+		product := models.Product{
+			Id:         primitive.ObjectID{'1'},
+			Name:       "Mobile 1",
+			Price:      40,
+			Quantity:   4,
+			Status:     true,
+			Date:       time.Time{},
+			CategoryId: primitive.ObjectID{'1'},
+			Brand: models.Brand{
+				Id:   primitive.ObjectID{'1'},
+				Name: "Brand 1",
+			},
+			Colors: []string{"red", "green", "blue"},
+		}
+		jsonValue, _ := json.Marshal(product)
+		byteProduct := bytes.NewBuffer(jsonValue)
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+		mockService := service.NewMockIProductService(mockCtrl)
+		mockService.EXPECT().Edit(&product).Return(nil).AnyTimes()
+
+		w := httptest.NewRecorder()
+		gin.SetMode(gin.ReleaseMode)
+		ctx, r := gin.CreateTestContext(w)
+		productTestController := NewProductController(mockService)
+		productTestController.EditProduct(ctx)
+		req, err := http.NewRequest("PUT", "api/v1/products", byteProduct)
+		if err != nil {
+			fmt.Println(err)
+		}
+		r.ServeHTTP(w, req)
+		assert.Equal(t, http.StatusCreated, w.Code)
+		t.Log(w.Body.String())
+	})
 }
 
 func TestCarController_DeleteProduct(t *testing.T) {
+	t.Run("Error", func(t *testing.T) {
+		var id string
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+		mockService := service.NewMockIProductService(mockCtrl)
+		mockService.EXPECT().Delete(id).Return(service.ErrProductNotFound).AnyTimes()
+
+		w := httptest.NewRecorder()
+		gin.SetMode(gin.ReleaseMode)
+		ctx, _ := gin.CreateTestContext(w)
+		productTestController := NewProductController(mockService)
+		productTestController.DeleteProduct(ctx)
+
+		assert.Equal(t, http.StatusNotFound, w.Code)
+		t.Log(w.Body.String())
+	})
+
+	t.Run("Success", func(t *testing.T) {
+		var id string
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+		mockService := service.NewMockIProductService(mockCtrl)
+		mockService.EXPECT().Delete(id).Return(nil).AnyTimes()
+
+		w := httptest.NewRecorder()
+		gin.SetMode(gin.ReleaseMode)
+		ctx, _ := gin.CreateTestContext(w)
+		productTestController := NewProductController(mockService)
+		productTestController.DeleteProduct(ctx)
+
+		assert.Equal(t, http.StatusAccepted, w.Code)
+		t.Log(w.Body.String())
+	})
 }
