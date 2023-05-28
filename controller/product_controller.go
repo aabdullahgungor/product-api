@@ -37,7 +37,7 @@ func (ps *productController) GetAllProducts(c *gin.Context) {
 // GetProduct          godoc
 // @Summary		Get single product by id
 // @Description	Returns the product whose id value matches the id.
-// @Tags			authors
+// @Tags			products
 // @Produce		json
 // @Param			id path	string true "search product by id"
 // @Success		200		{object}	models.Product
@@ -68,7 +68,7 @@ func (ps *productController) GetProductById(c *gin.Context) {
 // @Tags			products
 // @Produce		json
 // @Param			product body	models.Product	true "Product JSON"
-// @Success		200		{object}	response.Response{}
+// @Success		200		{object}  models.Product
 // @Failure 	400     error message
 // @Failure 	406     error message
 // @Router			/products [post]
@@ -101,7 +101,7 @@ func (ps *productController) CreateProduct(c *gin.Context) {
 // @Tags			products
 // @Produce		json
 // @Param			product body	models.Product	true "Product JSON"
-// @Success		200		{object}	response.Response{}
+// @Success		200		{object}  models.Product
 // @Failure 	400     error message
 // @Failure 	406     error message
 // @Router			/products [put]
@@ -134,7 +134,7 @@ func (ps *productController) EditProduct(c *gin.Context) {
 // @Tags			products
 // @Produce		json
 // @Param			id path	string true "delete product by id"
-// @Success		200		{object}	response.Response{}
+// @Success		200		{object} models.Product
 // @Failure 	400     error message
 // @Failure 	406     error message
 // @Router			/products/{id} [delete]

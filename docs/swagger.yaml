@@ -1,4 +1,155 @@
+definitions:
+  models.Brand:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  models.Product:
+    properties:
+      brand:
+        $ref: '#/definitions/models.Brand'
+      category_id:
+        type: string
+      colors:
+        items:
+          type: string
+        type: array
+      date:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      quantity:
+        type: integer
+      status:
+        type: boolean
+    type: object
 info:
   contact: {}
-paths: {}
+paths:
+  /products:
+    get:
+      description: Responds with the list of all products as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+      summary: Get products array
+      tags:
+      - products
+    post:
+      description: Takes a product JSON and store in DB. Return saved JSON.
+      parameters:
+      - description: Product JSON
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+        "400":
+          description: Bad Request
+          schema:
+            type: error
+        "406":
+          description: Not Acceptable
+          schema:
+            type: error
+      summary: Add a new product
+      tags:
+      - products
+    put:
+      description: Takes a product JSON and edit an in DB. Return saved JSON.
+      parameters:
+      - description: Product JSON
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+        "400":
+          description: Bad Request
+          schema:
+            type: error
+        "406":
+          description: Not Acceptable
+          schema:
+            type: error
+      summary: Edit an product
+      tags:
+      - products
+  /products/{id}:
+    delete:
+      description: Remove an product from DB by id.
+      parameters:
+      - description: delete product by id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+        "400":
+          description: Bad Request
+          schema:
+            type: error
+        "406":
+          description: Not Acceptable
+          schema:
+            type: error
+      summary: Delete an product
+      tags:
+      - products
+    get:
+      description: Returns the product whose id value matches the id.
+      parameters:
+      - description: search product by id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+        "400":
+          description: Bad Request
+          schema:
+            type: error
+        "406":
+          description: Not Acceptable
+          schema:
+            type: error
+      summary: Get single product by id
+      tags:
+      - products
 swagger: "2.0"
