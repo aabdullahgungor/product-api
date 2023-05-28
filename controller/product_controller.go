@@ -34,6 +34,16 @@ func (ps *productController) GetAllProducts(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, products)
 }
 
+// GetProduct          godoc
+// @Summary		Get single product by id
+// @Description	Returns the product whose id value matches the id.
+// @Tags			authors
+// @Produce		json
+// @Param			id path	string true "search product by id"
+// @Success		200		{object}	models.Product
+// @Failure 	400     error message
+// @Failure 	406     error message
+// @Router			/products/{id} [get]
 func (ps *productController) GetProductById(c *gin.Context) {
 	str_id := c.Param("id")
 	product, err := ps.service.GetById(str_id)
@@ -52,6 +62,16 @@ func (ps *productController) GetProductById(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, product)
 }
 
+// CreateProduct          godoc
+// @Summary		Add a new product
+// @Description	Takes a product JSON and store in DB. Return saved JSON.
+// @Tags			products
+// @Produce		json
+// @Param			product body	models.Product	true "Product JSON"
+// @Success		200		{object}	response.Response{}
+// @Failure 	400     error message
+// @Failure 	406     error message
+// @Router			/products [post]
 func (ps *productController) CreateProduct(c *gin.Context) {
 	var product models.Product
 	err := c.ShouldBindJSON(&product)
@@ -75,6 +95,16 @@ func (ps *productController) CreateProduct(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, gin.H{"message": "Product has been created"})
 }
 
+// EditProduct          godoc
+// @Summary		Edit an product
+// @Description	Takes a product JSON and edit an in DB. Return saved JSON.
+// @Tags			products
+// @Produce		json
+// @Param			product body	models.Product	true "Product JSON"
+// @Success		200		{object}	response.Response{}
+// @Failure 	400     error message
+// @Failure 	406     error message
+// @Router			/products [put]
 func (ps *productController) EditProduct(c *gin.Context) {
 	var product models.Product
 	err := c.ShouldBindJSON(&product)
@@ -98,6 +128,16 @@ func (ps *productController) EditProduct(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, gin.H{"message": "Product has been edited", "product_id": product.Id})
 }
 
+// DeleteProduct          godoc
+// @Summary		Delete an product
+// @Description	Remove an product from DB by id.
+// @Tags			products
+// @Produce		json
+// @Param			id path	string true "delete product by id"
+// @Success		200		{object}	response.Response{}
+// @Failure 	400     error message
+// @Failure 	406     error message
+// @Router			/products/{id} [delete]
 func (ps *productController) DeleteProduct(c *gin.Context) {
 	str_id := c.Param("id")
 	err := ps.service.Delete(str_id)
