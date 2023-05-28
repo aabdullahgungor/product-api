@@ -17,35 +17,42 @@ func NewProductController(ps service.IProductService) *productController {
 	return &productController{service: ps}
 }
 
+// GetProducts            godoc
+// @Summary		Get products array
+// @Description	Responds with the list of all products as JSON.
+// @Tags			products
+// @Produce		json
+// @Success		200	{object}	models.Product
+// @Router			/products [get]
 func (ps *productController) GetAllProducts(c *gin.Context) {
 	products, err := ps.service.GetAll()
 	if err != nil {
-		c.IndentedJSON(http.StatusNotFound,gin.H{"error": "Products cannot show: " + err.Error(), })
+		c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Products cannot show: " + err.Error()})
 		return
 	}
 	c.Header("Content-Type", "application/json")
 	c.IndentedJSON(http.StatusOK, products)
 }
 
-func (ps *productController) GetProductById(c *gin.Context) { 
+func (ps *productController) GetProductById(c *gin.Context) {
 	str_id := c.Param("id")
 	product, err := ps.service.GetById(str_id)
 	if err != nil {
-	 	if errors.Is(err, service.ErrIDIsNotValid) {
-	 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": err.Error()})
-	 		return
-	 	} else if  errors.Is(err, service.ErrProductNotFound) {
-	 		c.IndentedJSON(http.StatusNotFound, gin.H{"error": err.Error()})
-	 		return
-	 	}
-	 	c.IndentedJSON(http.StatusBadRequest, gin.H{"error":err.Error()})
-	 	return
-	} 
+		if errors.Is(err, service.ErrIDIsNotValid) {
+			c.IndentedJSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		} else if errors.Is(err, service.ErrProductNotFound) {
+			c.IndentedJSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	c.Header("Content-Type", "application/json")
 	c.IndentedJSON(http.StatusOK, product)
 }
 
-func (ps *productController) CreateProduct(c *gin.Context) { 
+func (ps *productController) CreateProduct(c *gin.Context) {
 	var product models.Product
 	err := c.ShouldBindJSON(&product)
 
@@ -65,10 +72,10 @@ func (ps *productController) CreateProduct(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusCreated, gin.H{"message":"Product has been created"})
-}		
+	c.IndentedJSON(http.StatusCreated, gin.H{"message": "Product has been created"})
+}
 
-func (ps *productController) EditProduct(c *gin.Context) { 
+func (ps *productController) EditProduct(c *gin.Context) {
 	var product models.Product
 	err := c.ShouldBindJSON(&product)
 
@@ -88,23 +95,23 @@ func (ps *productController) EditProduct(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusCreated, gin.H{"message":"Product has been edited","product_id": product.Id})
-}		
+	c.IndentedJSON(http.StatusCreated, gin.H{"message": "Product has been edited", "product_id": product.Id})
+}
 
-func (ps *productController) DeleteProduct(c *gin.Context) { 
+func (ps *productController) DeleteProduct(c *gin.Context) {
 	str_id := c.Param("id")
 	err := ps.service.Delete(str_id)
 	if err != nil {
 		if errors.Is(err, service.ErrIDIsNotValid) {
-			c.IndentedJSON(http.StatusNotFound, gin.H{"error": "id is not valid"+err.Error()})
+			c.IndentedJSON(http.StatusNotFound, gin.H{"error": "id is not valid" + err.Error()})
 			return
-		} else if  errors.Is(err, service.ErrProductNotFound) {
-			c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Product cannot be found"+err.Error()})
+		} else if errors.Is(err, service.ErrProductNotFound) {
+			c.IndentedJSON(http.StatusNotFound, gin.H{"error": "Product cannot be found" + err.Error()})
 			return
 		}
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"error":err.Error()})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.IndentedJSON(http.StatusAccepted, gin.H{"message":"Product has been deleted","product_id": str_id})	
-}		
+	c.IndentedJSON(http.StatusAccepted, gin.H{"message": "Product has been deleted", "product_id": str_id})
+}
