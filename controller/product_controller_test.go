@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"testing"
 	"time"
 
@@ -26,14 +28,18 @@ func TestCarController_GetAllProducts(t *testing.T) {
 		mockService := service.NewMockIProductService(mockCtrl)
 		mockService.EXPECT().GetAll().Return([]models.Product{}, errors.New("hata!")).AnyTimes()
 
+		gin.SetMode(gin.TestMode)
 		w := httptest.NewRecorder()
-		gin.SetMode(gin.ReleaseMode)
-		ctx, r := gin.CreateTestContext(w)
+		ctx, _ := gin.CreateTestContext(w)
+		ctx.Request = &http.Request{
+			Header: make(http.Header),
+			URL:    &url.URL{},
+		}
+		ctx.Request.Method = "GET"
+		ctx.Request.Header.Set("Content-Type", "application/json")
 		productTestController := NewProductController(mockService)
 		productTestController.GetAllProducts(ctx)
 
-		req, _ := http.NewRequest("GET", "api/v1/products", nil)
-		r.ServeHTTP(w, req)
 		assert.Equal(t, http.StatusNotFound, w.Code)
 		fmt.Println(w.Code)
 	})
@@ -44,14 +50,18 @@ func TestCarController_GetAllProducts(t *testing.T) {
 		mockService := service.NewMockIProductService(mockCtrl)
 		mockService.EXPECT().GetAll().Return([]models.Product{}, nil).AnyTimes()
 
+		gin.SetMode(gin.TestMode)
 		w := httptest.NewRecorder()
-		gin.SetMode(gin.ReleaseMode)
-		ctx, r := gin.CreateTestContext(w)
+		ctx, _ := gin.CreateTestContext(w)
+		ctx.Request = &http.Request{
+			Header: make(http.Header),
+			URL:    &url.URL{},
+		}
+		ctx.Request.Method = "GET"
+		ctx.Request.Header.Set("Content-Type", "application/json")
 		productTestController := NewProductController(mockService)
 		productTestController.GetAllProducts(ctx)
 
-		req, _ := http.NewRequest("GET", "api/v1/products", nil)
-		r.ServeHTTP(w, req)
 		assert.Equal(t, http.StatusOK, w.Code)
 		fmt.Println(w.Code)
 
@@ -60,26 +70,37 @@ func TestCarController_GetAllProducts(t *testing.T) {
 
 func TestCarController_GetProductbyId(t *testing.T) {
 	t.Run("Error", func(t *testing.T) {
-		var id string
+		id := "1"
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 		mockService := service.NewMockIProductService(mockCtrl)
 		mockService.EXPECT().GetById(id).Return(models.Product{}, service.ErrProductNotFound).AnyTimes()
 
+		gin.SetMode(gin.TestMode)
 		w := httptest.NewRecorder()
-		gin.SetMode(gin.ReleaseMode)
-		ctx, r := gin.CreateTestContext(w)
+		ctx, _ := gin.CreateTestContext(w)
+		ctx.Request = &http.Request{
+			Header: make(http.Header),
+			URL:    &url.URL{},
+		}
+		ctx.Request.Method = "GET"
+		ctx.Request.Header.Set("Content-Type", "application/json")
+		params := []gin.Param{
+			{
+				Key:   "id",
+				Value: "1",
+			},
+		}
+		ctx.Params = params
 		productTestController := NewProductController(mockService)
 		productTestController.GetProductById(ctx)
 
-		req, _ := http.NewRequest("GET", "api/v1/products/:id", nil)
-		r.ServeHTTP(w, req)
 		assert.Equal(t, http.StatusNotFound, w.Code)
 		fmt.Println(w.Code)
 	})
 
 	t.Run("Success", func(t *testing.T) {
-		var id string
+		id := "1"
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 		mockService := service.NewMockIProductService(mockCtrl)
@@ -98,14 +119,25 @@ func TestCarController_GetProductbyId(t *testing.T) {
 			Colors: []string{"red", "green", "blue"},
 		}, nil).AnyTimes()
 
+		gin.SetMode(gin.TestMode)
 		w := httptest.NewRecorder()
-		gin.SetMode(gin.ReleaseMode)
-		ctx, r := gin.CreateTestContext(w)
+		ctx, _ := gin.CreateTestContext(w)
+		ctx.Request = &http.Request{
+			Header: make(http.Header),
+			URL:    &url.URL{},
+		}
+		ctx.Request.Method = "GET"
+		ctx.Request.Header.Set("Content-Type", "application/json")
+		params := []gin.Param{
+			{
+				Key:   "id",
+				Value: "1",
+			},
+		}
+		ctx.Params = params
 		productTestController := NewProductController(mockService)
 		productTestController.GetProductById(ctx)
 
-		req, _ := http.NewRequest("GET", "api/v1/products/:id", nil)
-		r.ServeHTTP(w, req)
 		assert.Equal(t, http.StatusOK, w.Code)
 		fmt.Println(w.Code)
 
@@ -141,16 +173,19 @@ func TestCarController_CreateProduct(t *testing.T) {
 		mockService := service.NewMockIProductService(mockCtrl)
 		mockService.EXPECT().Create(&product).Return(errors.New("hata")).AnyTimes()
 
+		gin.SetMode(gin.TestMode)
 		w := httptest.NewRecorder()
-		gin.SetMode(gin.ReleaseMode)
-		ctx, r := gin.CreateTestContext(w)
+		ctx, _ := gin.CreateTestContext(w)
+		ctx.Request = &http.Request{
+			Header: make(http.Header),
+			URL:    &url.URL{},
+		}
+		ctx.Request.Method = "POST"
+		ctx.Request.Header.Set("Content-Type", "application/json")
+		ctx.Request.Body = io.NopCloser(byteProduct)
 		productTestController := NewProductController(mockService)
 		productTestController.CreateProduct(ctx)
-		req, err := http.NewRequest("POST", "api/v1/products", byteProduct)
-		if err != nil {
-			fmt.Println(err)
-		}
-		r.ServeHTTP(w, req)
+
 		assert.Equal(t, http.StatusNotAcceptable, w.Code)
 		t.Log(w.Body.String())
 	})
@@ -178,16 +213,19 @@ func TestCarController_CreateProduct(t *testing.T) {
 		mockService := service.NewMockIProductService(mockCtrl)
 		mockService.EXPECT().Create(&product).Return(nil).AnyTimes()
 
+		gin.SetMode(gin.TestMode)
 		w := httptest.NewRecorder()
-		gin.SetMode(gin.ReleaseMode)
-		ctx, r := gin.CreateTestContext(w)
+		ctx, _ := gin.CreateTestContext(w)
+		ctx.Request = &http.Request{
+			Header: make(http.Header),
+			URL:    &url.URL{},
+		}
+		ctx.Request.Method = "POST"
+		ctx.Request.Header.Set("Content-Type", "application/json")
+		ctx.Request.Body = io.NopCloser(byteProduct)
 		productTestController := NewProductController(mockService)
 		productTestController.CreateProduct(ctx)
-		req, err := http.NewRequest("POST", "api/v1/products", byteProduct)
-		if err != nil {
-			fmt.Println(err)
-		}
-		r.ServeHTTP(w, req)
+
 		assert.Equal(t, http.StatusCreated, w.Code)
 		t.Log(w.Body.String())
 
@@ -218,16 +256,19 @@ func TestCarController_EditProduct(t *testing.T) {
 		mockService := service.NewMockIProductService(mockCtrl)
 		mockService.EXPECT().Edit(&product).Return(errors.New("hata")).AnyTimes()
 
+		gin.SetMode(gin.TestMode)
 		w := httptest.NewRecorder()
-		gin.SetMode(gin.ReleaseMode)
-		ctx, r := gin.CreateTestContext(w)
+		ctx, _ := gin.CreateTestContext(w)
+		ctx.Request = &http.Request{
+			Header: make(http.Header),
+			URL:    &url.URL{},
+		}
+		ctx.Request.Method = "PUT"
+		ctx.Request.Header.Set("Content-Type", "application/json")
+		ctx.Request.Body = io.NopCloser(byteProduct)
 		productTestController := NewProductController(mockService)
 		productTestController.EditProduct(ctx)
-		req, err := http.NewRequest("PUT", "api/v1/products", byteProduct)
-		if err != nil {
-			fmt.Println(err)
-		}
-		r.ServeHTTP(w, req)
+
 		assert.Equal(t, http.StatusNotAcceptable, w.Code)
 		t.Log(w.Body.String())
 	})
@@ -255,16 +296,19 @@ func TestCarController_EditProduct(t *testing.T) {
 		mockService := service.NewMockIProductService(mockCtrl)
 		mockService.EXPECT().Edit(&product).Return(nil).AnyTimes()
 
+		gin.SetMode(gin.TestMode)
 		w := httptest.NewRecorder()
-		gin.SetMode(gin.ReleaseMode)
-		ctx, r := gin.CreateTestContext(w)
+		ctx, _ := gin.CreateTestContext(w)
+		ctx.Request = &http.Request{
+			Header: make(http.Header),
+			URL:    &url.URL{},
+		}
+		ctx.Request.Method = "PUT"
+		ctx.Request.Header.Set("Content-Type", "application/json")
+		ctx.Request.Body = io.NopCloser(byteProduct)
 		productTestController := NewProductController(mockService)
 		productTestController.EditProduct(ctx)
-		req, err := http.NewRequest("PUT", "api/v1/products", byteProduct)
-		if err != nil {
-			fmt.Println(err)
-		}
-		r.ServeHTTP(w, req)
+
 		assert.Equal(t, http.StatusCreated, w.Code)
 		t.Log(w.Body.String())
 	})
@@ -272,15 +316,28 @@ func TestCarController_EditProduct(t *testing.T) {
 
 func TestCarController_DeleteProduct(t *testing.T) {
 	t.Run("Error", func(t *testing.T) {
-		var id string
+		id := "1"
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 		mockService := service.NewMockIProductService(mockCtrl)
 		mockService.EXPECT().Delete(id).Return(service.ErrProductNotFound).AnyTimes()
 
+		gin.SetMode(gin.TestMode)
 		w := httptest.NewRecorder()
-		gin.SetMode(gin.ReleaseMode)
 		ctx, _ := gin.CreateTestContext(w)
+		ctx.Request = &http.Request{
+			Header: make(http.Header),
+			URL:    &url.URL{},
+		}
+		ctx.Request.Method = "DELETE"
+		ctx.Request.Header.Set("Content-Type", "application/json")
+		params := []gin.Param{
+			{
+				Key:   "id",
+				Value: "1",
+			},
+		}
+		ctx.Params = params
 		productTestController := NewProductController(mockService)
 		productTestController.DeleteProduct(ctx)
 
@@ -289,15 +346,28 @@ func TestCarController_DeleteProduct(t *testing.T) {
 	})
 
 	t.Run("Success", func(t *testing.T) {
-		var id string
+		id := "1"
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 		mockService := service.NewMockIProductService(mockCtrl)
 		mockService.EXPECT().Delete(id).Return(nil).AnyTimes()
 
+		gin.SetMode(gin.TestMode)
 		w := httptest.NewRecorder()
-		gin.SetMode(gin.ReleaseMode)
 		ctx, _ := gin.CreateTestContext(w)
+		ctx.Request = &http.Request{
+			Header: make(http.Header),
+			URL:    &url.URL{},
+		}
+		ctx.Request.Method = "DELETE"
+		ctx.Request.Header.Set("Content-Type", "application/json")
+		params := []gin.Param{
+			{
+				Key:   "id",
+				Value: "1",
+			},
+		}
+		ctx.Params = params
 		productTestController := NewProductController(mockService)
 		productTestController.DeleteProduct(ctx)
 
