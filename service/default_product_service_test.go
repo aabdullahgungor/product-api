@@ -64,12 +64,12 @@ func TestDefaultProductService_GetById(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 	mockRepository := repository.NewMockIProductRepository(mockCtrl)
-	mockRepository.EXPECT().GetProductById(gomock.Eq(id)).Return(models.Product{}, ErrProductNotFound)
+	mockRepository.EXPECT().GetProductById(id).Return(models.Product{}, repository.ErrProductNotFound)
 
 	productService := NewDefaultProductService(mockRepository)
 	_, err := productService.GetById(id)
 
-	assert.ErrorIs(t, err, ErrProductNotFound)
+	assert.ErrorIs(t, err, repository.ErrProductNotFound)
 }
 
 func TestDefaultProductService_Create(t *testing.T) {
@@ -115,7 +115,7 @@ func TestDefaultProductService_Delete(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 	mockRepository := repository.NewMockIProductRepository(mockCtrl)
-	mockRepository.EXPECT().DeleteProduct(gomock.Eq(id)).Return(nil).Times(1)
+	mockRepository.EXPECT().DeleteProduct(id).Return(nil).Times(1)
 
 	productService := NewDefaultProductService(mockRepository)
 	err := productService.Delete(id)
