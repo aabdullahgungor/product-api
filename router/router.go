@@ -28,7 +28,7 @@ func ConfigRoutes(router *gin.Engine) *gin.Engine {
 		}
 
 		// programmatically set swagger info
-		docs.SwaggerInfo.Title = "Swagger Example API"
+		docs.SwaggerInfo.Title = "Product API"
 		docs.SwaggerInfo.Description = "This is a sample server ProductApi server."
 		docs.SwaggerInfo.Version = "1.0"
 		docs.SwaggerInfo.Host = ""
