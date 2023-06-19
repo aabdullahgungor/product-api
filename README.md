@@ -1,9 +1,8 @@
-# Go RESTful API with Gin Web Framework & PostgreSQL
-This is an example golang backend application using PostgreSQL database with clean architecture.
+# Go RESTful API with Gin Web Framework & MongoDB
+This is an example golang backend application using MongoDB database with clean architecture.
 
 ## Features
 * Go Web Framework ([gin-gonic](https://github.com/gin-gonic/gin))
-* Containerize ([docker](https://www.docker.com/))
 * Swagger ([swaggo](https://github.com/swaggo/swag))
 * CRUD operations
 * Mock: [golang/mock](https://github.com/golang/mock)
@@ -48,6 +47,6 @@ http://localhost:8000/api/v1/swagger/index.html
 
 ```bash
 # Run tests
-go test ./test/test_controller -v
-go test ./test/test_service -v
+go test ./controller -v
+go test ./service -v
 ```
