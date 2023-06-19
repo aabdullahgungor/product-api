@@ -8,13 +8,13 @@ import (
 )
 
 type Server struct {
-	port string
+	port   string
 	server *gin.Engine
 }
 
 func NewServer() Server {
 	return Server{
-		port: "8000",
+		port:   "8000",
 		server: gin.Default(),
 	}
 }
