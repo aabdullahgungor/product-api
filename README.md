@@ -37,7 +37,56 @@ http://localhost:8000/api/v1
 - PUT localhost:8000/api/v1/products
 - DELETE localhost:8000/api/v1/products/:id
 - ........
-
+### Sample API Requests and Responses 
+####POST localhost:8000/api/v1/products
+request body:
+```bash
+{
+        "name": "Refrigerator 1",
+        "price": 1000,
+        "quantity": 3,
+        "status": true,
+        "date": "2016-10-20T00:00:00Z",
+        "category_id": "5a30de130867edfa45711668",
+        "brand": {
+            "id": "641db6ba47413b86ecfae49a",
+            "name": "Vestel"
+        },
+        "colors": [
+            "red",
+            "green",
+            "blue"
+        ]
+    }
+```
+response body:
+```bash
+{
+    "message": "Product has been created"
+}
+```
+####POST localhost:8000/api/v1/products/641db6ba47413b86ecfae49b
+response body:
+```bash
+{
+    "id": "641db6ba47413b86ecfae49b",
+    "name": "Mobile 1",
+    "price": 45,
+    "quantity": 4,
+    "status": true,
+    "date": "2016-10-20T00:00:00Z",
+    "category_id": "5a30de130867edfa45711668",
+    "brand": {
+        "id": "641db6ba47413b86ecfae49a",
+        "name": "Vestel"
+    },
+    "colors": [
+        "red",
+        "green",
+        "blue"
+    ]
+}
+```
 ## Open API Doc Preview
 http://localhost:8000/api/v1/swagger/index.html
 
