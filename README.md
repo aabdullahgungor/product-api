@@ -36,7 +36,7 @@ http://localhost:8000/api/v1
 - POST localhost:8000/api/v1/products
 - PUT localhost:8000/api/v1/products
 - DELETE localhost:8000/api/v1/products/:id
-- ........
+  
 ### Sample API Requests and Responses
 
 #### POST localhost:8000/api/v1/products
