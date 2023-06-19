@@ -37,8 +37,12 @@ http://localhost:8000/api/v1
 - PUT localhost:8000/api/v1/products
 - DELETE localhost:8000/api/v1/products/:id
 - ........
-### Sample API Requests and Responses 
-####POST localhost:8000/api/v1/products
+### Sample API Requests and Responses
+
+#### POST localhost:8000/api/v1/products
+```bash
+localhost:8000/api/v1/products
+```
 request body:
 ```bash
 {
@@ -65,7 +69,10 @@ response body:
     "message": "Product has been created"
 }
 ```
-####POST localhost:8000/api/v1/products/641db6ba47413b86ecfae49b
+#### GET localhost:8000/api/v1/products/:id
+```bash
+localhost:8000/api/v1/products/641db6ba47413b86ecfae49b
+```
 response body:
 ```bash
 {
